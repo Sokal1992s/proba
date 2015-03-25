@@ -9,11 +9,14 @@ namespace Puzzle
 {
     public class FringeFifo :IFringe
     {
-        List<Node> list = new List<Node>();
+        //List<Node> list = new List<Node>();
+        Queue<Node> list = new Queue<Node>();
 
         public void Add(Node node)
         {
-            list.Add(node);
+            //list.Add(node);
+            list.Enqueue(node);
+            
         }
 
         public bool EmptyFringe()
@@ -30,12 +33,13 @@ namespace Puzzle
 
         public Node UploadState()
         {
-            Node node;
+            //Node node;
 
-            node = list.First();
-            list.RemoveAt(0);
+            //node = list.First();
+            //list.RemoveAt(0);
 
-            return node;
+            //return node;
+            return list.Dequeue();
         }
     }
 }

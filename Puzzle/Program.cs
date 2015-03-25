@@ -26,12 +26,32 @@ namespace Puzzle
             //startState.PuzzleState[7] = 3;
             //startState.PuzzleState[8] = 8;
 
-            startState.PuzzleState[0] = 1;
-            startState.PuzzleState[1] = 6;
+            //startState.PuzzleState[0] = 1;
+            //startState.PuzzleState[1] = 6;
+            //startState.PuzzleState[2] = 2;
+            //startState.PuzzleState[3] = 5;
+            //startState.PuzzleState[4] = 7;
+            //startState.PuzzleState[5] = 0;
+            //startState.PuzzleState[6] = 4;
+            //startState.PuzzleState[7] = 8;
+            //startState.PuzzleState[8] = 3;
+
+            //startState.PuzzleState[0] = 0;
+            //startState.PuzzleState[1] = 6;
+            //startState.PuzzleState[2] = 2;
+            //startState.PuzzleState[3] = 1;
+            //startState.PuzzleState[4] = 5;
+            //startState.PuzzleState[5] = 7;
+            //startState.PuzzleState[6] = 4;
+            //startState.PuzzleState[7] = 8;
+            //startState.PuzzleState[8] = 3;
+
+            startState.PuzzleState[0] = 6;
+            startState.PuzzleState[1] = 0;
             startState.PuzzleState[2] = 2;
-            startState.PuzzleState[3] = 5;
-            startState.PuzzleState[4] = 7;
-            startState.PuzzleState[5] = 0;
+            startState.PuzzleState[3] = 1;
+            startState.PuzzleState[4] = 5;
+            startState.PuzzleState[5] = 7;
             startState.PuzzleState[6] = 4;
             startState.PuzzleState[7] = 8;
             startState.PuzzleState[8] = 3;

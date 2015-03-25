@@ -54,7 +54,7 @@ namespace Puzzle
             }
             else
             {
-                Console.WriteLine("ni ma 0  w tablicy");
+                Console.WriteLine("nie ma 0 w tablicy startowej");
             }
             return N as IEnumerable<IState>;
         }
