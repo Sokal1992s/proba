@@ -28,10 +28,10 @@ namespace Puzzle
 
             startState.PuzzleState[0] = 1;
             startState.PuzzleState[1] = 6;
-            startState.PuzzleState[2] = 0;
+            startState.PuzzleState[2] = 2;
             startState.PuzzleState[3] = 5;
             startState.PuzzleState[4] = 7;
-            startState.PuzzleState[5] = 2;
+            startState.PuzzleState[5] = 0;
             startState.PuzzleState[6] = 4;
             startState.PuzzleState[7] = 8;
             startState.PuzzleState[8] = 3;
@@ -56,7 +56,7 @@ namespace Puzzle
 
             Console.WriteLine("Wait...");
 
-            var result = treeSearchWithQueue.Search(P, F);
+            var result = treeSearchWithQueue.Search(P, F).Reverse();
             foreach (var state in result)
             {
                 State _state = state as State;

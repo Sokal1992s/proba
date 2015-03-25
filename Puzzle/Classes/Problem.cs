@@ -45,7 +45,7 @@ namespace Puzzle
             {
                 if (_poz0 - _s.N >= 0)
                     N.Add(_s.ReplaceTwoValue(_poz0, _poz0 - _s.N));
-                if(_poz0+_s.N < _s.N*_s.N) //ni pasi
+                if(_poz0+_s.N < _s.N*_s.N) 
                     N.Add(_s.ReplaceTwoValue(_poz0, _poz0 + _s.N));
                 if (_poz0 % _s.N != 0)
                     N.Add(_s.ReplaceTwoValue(_poz0, _poz0 - 1));
