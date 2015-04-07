@@ -12,6 +12,7 @@ namespace Puzzle
         const int n = 3;
 
         public int[] PuzzleState;
+        public int priority = 0;
         public int N
         {
             get
@@ -55,6 +56,17 @@ namespace Puzzle
                 result += this.PuzzleState[i].ToString();
             }
             return result;
+        }
+
+        public bool IsEqual(IState state)
+        {
+            var _state = state as State;
+            for (int i = 0; i < this.PuzzleState.Length; i++)
+            {
+                if (this.PuzzleState[i] != _state.PuzzleState[i])
+                    return false;
+            }
+            return true;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Puzzle
             //startState.PuzzleState[7] = 8;
             //startState.PuzzleState[8] = 3;
 
-            //startState.PuzzleState[0] = 0;
+            //startState.PuzzleState[0] = 0;  **
             //startState.PuzzleState[1] = 6;
             //startState.PuzzleState[2] = 2;
             //startState.PuzzleState[3] = 1;
@@ -46,15 +46,25 @@ namespace Puzzle
             //startState.PuzzleState[7] = 8;
             //startState.PuzzleState[8] = 3;
 
-            startState.PuzzleState[0] = 6;
-            startState.PuzzleState[1] = 0;
-            startState.PuzzleState[2] = 2;
-            startState.PuzzleState[3] = 1;
+            //startState.PuzzleState[0] = 6;
+            //startState.PuzzleState[1] = 0;
+            //startState.PuzzleState[2] = 2;
+            //startState.PuzzleState[3] = 1;
+            //startState.PuzzleState[4] = 5;
+            //startState.PuzzleState[5] = 7;
+            //startState.PuzzleState[6] = 4;
+            //startState.PuzzleState[7] = 8;
+            //startState.PuzzleState[8] = 3;
+
+            startState.PuzzleState[0] = 1;
+            startState.PuzzleState[1] = 2;
+            startState.PuzzleState[2] = 3;
+            startState.PuzzleState[3] = 0;
             startState.PuzzleState[4] = 5;
-            startState.PuzzleState[5] = 7;
+            startState.PuzzleState[5] = 6;
             startState.PuzzleState[6] = 4;
-            startState.PuzzleState[7] = 8;
-            startState.PuzzleState[8] = 3;
+            startState.PuzzleState[7] = 7;
+            startState.PuzzleState[8] = 8;
 
             State endState = new State();
             //for (int i = 0; i < 9; i++)
@@ -70,22 +80,32 @@ namespace Puzzle
             endState.PuzzleState[8] = 0;
 
             Problem P = new Problem(startState, endState);
-            FringeFifo F = new FringeFifo();
-            
-            TreeSearchWithQueue treeSearchWithQueue=new TreeSearchWithQueue();
+            FringeFifo fifo = new FringeFifo();
+            FringeLifo lifo = new FringeLifo();
+
+            GenerateResult(P, fifo);
+            GenerateResult(P, lifo);
+
+            Console.ReadLine();
+        }
+
+        private static void GenerateResult(IProblem P, IFringe F)
+        {
+            Fringe _f = new Fringe(F);
+
+            TreeSearchWithQueue treeSearchWithQueue = new TreeSearchWithQueue();
 
             Console.WriteLine("Wait...");
 
-            var result = treeSearchWithQueue.Search(P, F).Reverse();
+            var result = treeSearchWithQueue.Search(P, _f).Reverse();
             foreach (var state in result)
             {
                 State _state = state as State;
                 Console.WriteLine(_state.ToString());
             }
 
+            Console.WriteLine("Count: {0}", _f.Counter);
             Console.WriteLine("Done...");
-            Console.ReadLine();
-
         }
     }
 }

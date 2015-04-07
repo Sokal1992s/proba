@@ -53,7 +53,7 @@ namespace Search
         {
             while (node != null)
             {
-                if (node.State == nextState)
+                if (node.State.IsEqual(nextState))
                     return true;
                 node = node.Parent;
             }

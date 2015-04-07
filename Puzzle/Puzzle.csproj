@@ -41,7 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Fringe.cs" />
     <Compile Include="Classes\FringeFifo.cs" />
+    <Compile Include="Classes\FringeLifo.cs" />
+    <Compile Include="Classes\FringeWithPrio.cs" />
+    <Compile Include="Classes\Heap.cs" />
+    <Compile Include="Classes\heap2.cs" />
+    <Compile Include="Classes\Heap3.cs" />
     <Compile Include="Classes\Problem.cs" />
     <Compile Include="Classes\State.cs" />
     <Compile Include="Program.cs" />

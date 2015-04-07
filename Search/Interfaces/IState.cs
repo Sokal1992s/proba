@@ -8,5 +8,6 @@ namespace Search
 {
     public interface IState
     {
+        bool IsEqual(IState state);
     }
 }
