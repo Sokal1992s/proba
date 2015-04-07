@@ -5,7 +5,9 @@ using System.Linq;
 
 namespace Puzzle
 {
-    public class Heap3<T, K> where K : IComparable<K>, IFringe
+    public class Heap3<T, K>
+        where T : IFringe
+        where K : IComparable<K>
     {
         public Func<T, K> Key;                          //key to priorytet, to jest nasze pole, które przyjmuje funkcje, która przyjmuje jako arg T, i zwraca K
         private List<T> list = new List<T>();
