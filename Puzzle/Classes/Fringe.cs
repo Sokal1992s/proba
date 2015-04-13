@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Puzzle
 {
-    class Fringe : IFringe
+    class Fringe<T> : IFringe<T>
     {
-        IFringe fringe;
+        IFringe<T> fringe;
         public int counter;
         public int Counter
         {
@@ -19,14 +19,14 @@ namespace Puzzle
             }
         }
 
-        public Fringe(IFringe Fringe)
+        public Fringe(IFringe<T> Fringe)
         {
             this.counter = 0;
             this.fringe = Fringe;
 
         }
 
-        public void Add(Node node)
+        public void Add(T node)
         {
             counter++;
             fringe.Add(node);
@@ -38,7 +38,7 @@ namespace Puzzle
             return fringe.EmptyFringe();
         }
 
-        public Node UploadState()
+        public T UploadState()
         {
             return fringe.UploadState();
         }

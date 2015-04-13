@@ -5,11 +5,10 @@ using System.Linq;
 
 namespace Puzzle
 {
-    public class Heap3<T, K>
-        where T : IFringe
+    public class Heap3<T, K> :IFringe<T>
         where K : IComparable<K>
     {
-        public Func<T, K> Key;                          //key to priorytet, to jest nasze pole, które przyjmuje funkcje, która przyjmuje jako arg T, i zwraca K
+        public Func<T, K> Key;          
         private List<T> list = new List<T>();
 
         public Heap3(Func<T, K> _key)
@@ -22,8 +21,9 @@ namespace Puzzle
             var element = list.First();
 
             this.list[0] = this.list[this.list.Count - 1];
+
             this.list.RemoveAt(this.list.Count - 1);
-            this.ShiftDown(0);                  
+            this.ShiftDown(0);                            
 
             return element;
         }
@@ -32,6 +32,12 @@ namespace Puzzle
         {
             this.list.Add(element);
             this.ShiftUp(this.list.Count - 1);
+
+            //if(this.list.Count-1 != 0)
+            //{
+            //    this.ShiftUp(this.list.Count - 1);
+            //}
+            
         }
 
         public bool EmptyFringe()
@@ -51,13 +57,21 @@ namespace Puzzle
             int parent;
             do
             {
-                parent = child;                                                                                         
-                if (2 * parent + 1 < list.Count && Key(list[2 * parent + 1]).CompareTo(Key(list[child])) > 0)              
-                    child = 2 * parent + 1;
-                if (2 * parent < list.Count && Key(list[2 * parent + 2]).CompareTo(Key(list[child])) > 0)                   
-                    child = 2 * parent + 2;
-                T tmp = list[parent];
-                list[child] = tmp;                                                                                       
+                parent = child; 
+                try
+                {
+                                                                                          //dziecko na index rodzica
+                    if (2 * parent + 1 < list.Count && Key(list[2 * parent + 1]).CompareTo(Key(list[child])) > 0)               //czy dziecko istnieje i czy jest większe od rodzica
+                        child = 2 * parent + 1;
+                    if (2 * parent < list.Count && Key(list[2 * parent + 2]).CompareTo(Key(list[child])) > 0)                   //tu musimy porównać nie z rodzicem, ale z tym pierwszym dzieckiem
+                        child = 2 * parent + 2;
+                    T tmp = list[parent];
+                    list[parent] = list[child];
+                    list[child] = tmp;
+                }
+                catch 
+                { }
+                
             } while (parent != child);
         }
 
@@ -76,6 +90,8 @@ namespace Puzzle
                     list[parent] = tmp_child;
                 }
             } while (child != parent);
+
+            //1) liczba kostek nie na swoim miejscu 2)odl. Manhatan
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Puzzle
 {
-    public class FringeLifo : IFringe
+    public class FringeLifo<T> : IFringe<T>
     {
-        List<Node> list = new List<Node>();
+        List<T> list = new List<T>();
 
-        public void Add(Node node)
+        public void Add(T node)
         {
             list.Insert(0, node);
         }
@@ -28,9 +28,9 @@ namespace Puzzle
             }
         }
 
-        public Node UploadState()
+        public T UploadState()
         {
-            Node node;
+            T node;
 
             node = list.First();
             list.RemoveAt(0);

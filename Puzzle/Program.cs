@@ -80,18 +80,29 @@ namespace Puzzle
             endState.PuzzleState[8] = 0;
 
             Problem P = new Problem(startState, endState);
-            FringeFifo fifo = new FringeFifo();
-            FringeLifo lifo = new FringeLifo();
+            FringeFifo<Node> fifo = new FringeFifo<Node>();
+            FringeLifo<Node> lifo = new FringeLifo<Node>();
 
-            GenerateResult(P, fifo);
-            GenerateResult(P, lifo);
+            //GenerateResult(P, fifo);
+            //GenerateResult(P, lifo);
 
+
+            //1) liczba kostek nie na swoim miejscu 2)odl. Manhatan
+            Func<Node, int> function = delegate(Node n)
+            {
+                return 1; 
+            };
+
+            Heap3<Node, int> heap = new Heap3<Node, int>(function);
+
+            GenerateResult(P, heap);
+            
             Console.ReadLine();
         }
 
-        private static void GenerateResult(IProblem P, IFringe F)
+        private static void GenerateResult(IProblem P, IFringe<Node> F)
         {
-            Fringe _f = new Fringe(F);
+            Fringe<Node> _f = new Fringe<Node>(F);
 
             TreeSearchWithQueue treeSearchWithQueue = new TreeSearchWithQueue();
 

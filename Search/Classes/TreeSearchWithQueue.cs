@@ -8,7 +8,7 @@ namespace Search
 {
     public class TreeSearchWithQueue
     {
-        public IEnumerable<IState> Search(IProblem P, IFringe F)
+        public IEnumerable<IState> Search(IProblem P, IFringe<Node> F)
         {
             F.Add(new Node(P.InitialState(), null));
             while (!F.EmptyFringe())
@@ -36,7 +36,7 @@ namespace Search
             return result;
         }
 
-        void AddUnvisited(IEnumerable<IState> successors, Node node, IFringe F)
+        void AddUnvisited(IEnumerable<IState> successors, Node node, IFringe<Node> F)
         {
             if (successors == null)
                 return;

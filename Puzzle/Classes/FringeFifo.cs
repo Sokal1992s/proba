@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Puzzle
 {
-    public class FringeFifo :IFringe
+    public class FringeFifo<T> :IFringe<T>
     {
         //List<Node> list = new List<Node>();
-        Queue<Node> list = new Queue<Node>();
+        Queue<T> list = new Queue<T>();
 
-        public void Add(Node node)
+        public void Add(T node)
         {
             //list.Add(node);
             list.Enqueue(node);
@@ -31,7 +31,7 @@ namespace Puzzle
             }
         }
 
-        public Node UploadState()
+        public T UploadState()
         {
             //Node node;
 

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Search
 {
-    public interface IFringe
+    public interface IFringe<T>
     {
-        void Add(Node node);      // Add state to the fringe
+        void Add(T node);      // Add state to the fringe
         bool EmptyFringe();        // if (fringe is empty) {return true} else {reurn false}
-        Node UploadState();        // return state and its parent; remove state from the fringe
+        T UploadState();        // return state and its parent; remove state from the fringe
     }
 }
