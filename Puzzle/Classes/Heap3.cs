@@ -21,9 +21,8 @@ namespace Puzzle
             var element = list.First();
 
             this.list[0] = this.list[this.list.Count - 1];
-
             this.list.RemoveAt(this.list.Count - 1);
-            this.ShiftDown(0);                            
+            this.ShiftDown(0);                         
 
             return element;
         }
@@ -60,10 +59,9 @@ namespace Puzzle
                 parent = child; 
                 try
                 {
-                                                                                          //dziecko na index rodzica
-                    if (2 * parent + 1 < list.Count && Key(list[2 * parent + 1]).CompareTo(Key(list[child])) > 0)               //czy dziecko istnieje i czy jest większe od rodzica
+                    if (2 * parent + 1 < list.Count && Key(list[2 * parent + 1]).CompareTo(Key(list[child])) > 0)
                         child = 2 * parent + 1;
-                    if (2 * parent < list.Count && Key(list[2 * parent + 2]).CompareTo(Key(list[child])) > 0)                   //tu musimy porównać nie z rodzicem, ale z tym pierwszym dzieckiem
+                    if (2 * parent < list.Count && Key(list[2 * parent + 2]).CompareTo(Key(list[child])) > 0)
                         child = 2 * parent + 2;
                     T tmp = list[parent];
                     list[parent] = list[child];
@@ -80,18 +78,27 @@ namespace Puzzle
             int parent;
             do
             {
-                if (child % 2 == 0) parent = child / 2;
-                else parent = (child / 2) + 1;
+                if (child % 2 == 0)
+                    //parent = (child / 2) + 1;
+                    parent = child / 2;
+                else
+                    //parent = child / 2;
+                    parent = (child / 2) + 1;
                 if (Key(this.list[child]).CompareTo(Key(this.list[parent])) > 0)
                 {
                     T tmp_parent = list[parent];
                     T tmp_child = list[child];
                     list[child] = tmp_parent;
                     list[parent] = tmp_child;
+                    child = parent;
                 }
-            } while (child != parent);
+                else
+                {
+                    child = 0;
+                }
+            } while (child !=0 && child==parent);
 
-            //1) liczba kostek nie na swoim miejscu 2)odl. Manhatan
         }
+
     }
 }

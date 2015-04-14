@@ -36,15 +36,15 @@ namespace Puzzle
             //startState.PuzzleState[7] = 8;
             //startState.PuzzleState[8] = 3;
 
-            //startState.PuzzleState[0] = 0;  **
-            //startState.PuzzleState[1] = 6;
-            //startState.PuzzleState[2] = 2;
-            //startState.PuzzleState[3] = 1;
-            //startState.PuzzleState[4] = 5;
-            //startState.PuzzleState[5] = 7;
-            //startState.PuzzleState[6] = 4;
-            //startState.PuzzleState[7] = 8;
-            //startState.PuzzleState[8] = 3;
+            startState.PuzzleState[0] = 0; //**
+           startState.PuzzleState[1] = 6;
+            startState.PuzzleState[2] = 2;
+            startState.PuzzleState[3] = 1;
+            startState.PuzzleState[4] = 5;
+            startState.PuzzleState[5] = 7;
+            startState.PuzzleState[6] = 4;
+            startState.PuzzleState[7] = 8;
+            startState.PuzzleState[8] = 3;
 
             //startState.PuzzleState[0] = 6;
             //startState.PuzzleState[1] = 0;
@@ -56,15 +56,15 @@ namespace Puzzle
             //startState.PuzzleState[7] = 8;
             //startState.PuzzleState[8] = 3;
 
-            startState.PuzzleState[0] = 1;
-            startState.PuzzleState[1] = 2;
-            startState.PuzzleState[2] = 3;
-            startState.PuzzleState[3] = 0;
-            startState.PuzzleState[4] = 5;
-            startState.PuzzleState[5] = 6;
-            startState.PuzzleState[6] = 4;
-            startState.PuzzleState[7] = 7;
-            startState.PuzzleState[8] = 8;
+            //startState.PuzzleState[0] = 1;
+            //startState.PuzzleState[1] = 2;
+            //startState.PuzzleState[2] = 3;
+            //startState.PuzzleState[3] = 0;
+            //startState.PuzzleState[4] = 5;
+            //startState.PuzzleState[5] = 6;
+            //startState.PuzzleState[6] = 4;
+            //startState.PuzzleState[7] = 7;
+            //startState.PuzzleState[8] = 8;
 
             State endState = new State();
             //for (int i = 0; i < 9; i++)
@@ -86,16 +86,54 @@ namespace Puzzle
             //GenerateResult(P, fifo);
             //GenerateResult(P, lifo);
 
-
-            //1) liczba kostek nie na swoim miejscu 2)odl. Manhatan
-            Func<Node, int> function = delegate(Node n)
+            //*) waga równa 1 dla każdej kombinacji
+            Func<Node, int> function0 = delegate(Node n)
             {
-                return 1; 
+                return 1;
             };
 
-            Heap3<Node, int> heap = new Heap3<Node, int>(function);
+            //1) waga = liczba kostek na swoim miejscu 
+            Func<Node, int> function1 = delegate(Node n)
+            {
+                int weight=0;
 
-            GenerateResult(P, heap);
+                var state = n.State as State;
+                for (int i = 0; i < state.PuzzleState.Length; i++)
+                {
+                    if (state.PuzzleState[i] == endState.PuzzleState[i])
+                        weight++;
+                }
+
+                return weight;
+            };
+            //2) waga = odległość Manhattan
+            Func<Node, int> function2 = delegate(Node n)
+            {
+                var state = n.State as State;
+                //największa odległóść - 0-lewy, górny róg 
+                int weight = 2 * (state.N - 1);
+                //od największej odległości będziemy odejmować odległość 0 
+                //im więcej odejmiemy (tym zero dalej od końca) tym gorszy priorytet
+  
+                //xk, yk - położenie "0" w endState
+                int xk = endState.Find(0) / state.N;
+                int yk = endState.Find(0) % state.N;
+
+                //xp, yp - położenie "0" w n.state
+                int xp = state.Find(0) / state.N;
+                int yp = state.Find(0) % state.N;
+
+                weight -= Math.Abs(xp - xk) + Math.Abs(yp - yk);
+
+                return weight;
+            };
+
+
+            Heap3<Node, int> heap1 = new Heap3<Node, int>(function1);
+            GenerateResult(P, heap1);
+
+            Heap3<Node, int> heap2 = new Heap3<Node, int>(function2);
+            GenerateResult(P, heap2);
             
             Console.ReadLine();
         }
