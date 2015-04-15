@@ -4,15 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Search;
+using System.Diagnostics;
 
 namespace Puzzle
 {
     class Program
     {
+        static State startState = new State();
+        static State endState = new State();
+
+        static List<string> addCounter = new List<string>();
+        static List<string> executionTime = new List<string>();
+        static List<string> label = new List<string>();
+
         static void Main(string[] args)
         {
-            State startState = new State();
-
             //for (int i = 0; i < 9; i++)
             //    startState.PuzzleState[i] = i;
             //to sie liczy długo..
@@ -36,8 +42,8 @@ namespace Puzzle
             //startState.PuzzleState[7] = 8;
             //startState.PuzzleState[8] = 3;
 
-            startState.PuzzleState[0] = 0; //**
-           startState.PuzzleState[1] = 6;
+            startState.PuzzleState[0] = 0;   //**
+            startState.PuzzleState[1] = 6;
             startState.PuzzleState[2] = 2;
             startState.PuzzleState[3] = 1;
             startState.PuzzleState[4] = 5;
@@ -66,49 +72,85 @@ namespace Puzzle
             //startState.PuzzleState[7] = 7;
             //startState.PuzzleState[8] = 8;
 
-            State endState = new State();
-            //for (int i = 0; i < 9; i++)
-            //    endState.PuzzleState[i] = i;
-            endState.PuzzleState[0] = 1;
-            endState.PuzzleState[1] = 2;
-            endState.PuzzleState[2] = 3;
-            endState.PuzzleState[3] = 4;
-            endState.PuzzleState[4] = 5;
-            endState.PuzzleState[5] = 6;
-            endState.PuzzleState[6] = 7;
-            endState.PuzzleState[7] = 8;
+            for (int i = 0; i < 8; i++)
+                endState.PuzzleState[i] = i+1;
             endState.PuzzleState[8] = 0;
+
+            //*) waga równa 1 dla każdej kombinacji
+            Func<Node, int> function0 = func0;
+
+            //1) waga = liczba kostek na swoim miejscu 
+            Func<Node, int> function1 = func1;
+
+            //2) waga = odległość Manhattan
+            Func<Node, int> function2 = func2;
 
             Problem P = new Problem(startState, endState);
             FringeFifo<Node> fifo = new FringeFifo<Node>();
             FringeLifo<Node> lifo = new FringeLifo<Node>();
 
-            //GenerateResult(P, fifo);
+            GenerateResult(P, fifo, "fifo");
             //GenerateResult(P, lifo);
 
-            //*) waga równa 1 dla każdej kombinacji
-            Func<Node, int> function0 = delegate(Node n)
-            {
-                return 1;
-            };
+            Heap3<Node, int> heap1 = new Heap3<Node, int>(function1);
+            GenerateResult(P, heap1, "correct field");
 
-            //1) waga = liczba kostek na swoim miejscu 
-            Func<Node, int> function1 = delegate(Node n)
-            {
-                int weight=0;
+            Heap3<Node, int> heap2 = new Heap3<Node, int>(function2);
+            GenerateResult(P, heap2, "Manhattan");
 
-                var state = n.State as State;
-                for (int i = 0; i < state.PuzzleState.Length; i++)
-                {
-                    if (state.PuzzleState[i] == endState.PuzzleState[i])
-                        weight++;
-                }
 
-                return weight;
-            };
-            //2) waga = odległość Manhattan
-            Func<Node, int> function2 = delegate(Node n)
+            label.Insert(0, "");
+            foreach (string s in label)
             {
+                Console.Write(string.Format("{0,15}", s));
+            }
+            Console.WriteLine();
+
+            Console.Write(string.Format("{0,15}","Add counter:"));
+            foreach(string s in addCounter)
+            {
+                Console.Write(string.Format("{0,15}",s));
+            }
+            Console.WriteLine();
+
+            Console.Write(string.Format("{0,15}","Execution time:"));
+            foreach (string s in executionTime)
+            {
+                Console.Write(string.Format("{0,15}",s));
+            }
+
+            Console.ReadLine();
+        }
+
+        private static void GenerateResult(IProblem P, IFringe<Node> F,string title)
+        {
+            Fringe<Node> _f = new Fringe<Node>(F);
+
+            TreeSearchWithQueue treeSearchWithQueue = new TreeSearchWithQueue();
+
+            Console.WriteLine("Wait...");
+
+            var watch = Stopwatch.StartNew();
+            var result = treeSearchWithQueue.Search(P, _f).Reverse();
+            watch.Stop();
+
+            foreach (var state in result)
+            {
+                State _state = state as State;
+                Console.WriteLine(_state.ToString());
+            }
+
+            //Console.WriteLine("Add function counter: {0}", _f.Counter);
+            addCounter.Add(_f.Counter.ToString());
+            //Console.WriteLine("Execution time: {0}ms", watch.ElapsedMilliseconds);
+            executionTime.Add(watch.ElapsedMilliseconds.ToString());
+            label.Add(title);
+            
+            Console.WriteLine("Done...");
+        }
+
+        private static int func2(Node n)
+        {
                 var state = n.State as State;
                 //największa odległóść - 0-lewy, górny róg 
                 int weight = 2 * (state.N - 1);
@@ -126,35 +168,25 @@ namespace Puzzle
                 weight -= Math.Abs(xp - xk) + Math.Abs(yp - yk);
 
                 return weight;
-            };
-
-
-            Heap3<Node, int> heap1 = new Heap3<Node, int>(function1);
-            GenerateResult(P, heap1);
-
-            Heap3<Node, int> heap2 = new Heap3<Node, int>(function2);
-            GenerateResult(P, heap2);
-            
-            Console.ReadLine();
         }
 
-        private static void GenerateResult(IProblem P, IFringe<Node> F)
+        private static int func1(Node n)
         {
-            Fringe<Node> _f = new Fringe<Node>(F);
+            int weight=0;
 
-            TreeSearchWithQueue treeSearchWithQueue = new TreeSearchWithQueue();
-
-            Console.WriteLine("Wait...");
-
-            var result = treeSearchWithQueue.Search(P, _f).Reverse();
-            foreach (var state in result)
+            var state = n.State as State;
+            for (int i = 0; i < state.PuzzleState.Length; i++)
             {
-                State _state = state as State;
-                Console.WriteLine(_state.ToString());
+                if (state.PuzzleState[i] == endState.PuzzleState[i])
+                    weight++;
             }
 
-            Console.WriteLine("Count: {0}", _f.Counter);
-            Console.WriteLine("Done...");
+            return weight;
+        }
+
+        private static int func0(Node n)
+        {
+            return 1;
         }
     }
 }
