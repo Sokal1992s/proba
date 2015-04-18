@@ -13,9 +13,10 @@ namespace Puzzle
         static State startState = new State();
         static State endState = new State();
 
-        static List<string> addCounter = new List<string>();
-        static List<string> executionTime = new List<string>();
-        static List<string> label = new List<string>();
+        static string[] addCounter = new string[6] {"", "", "", "", "", ""};
+        static string[] executionTime = new string[6] { "", "", "", "", "", "" };
+        static string[] wayLength = new string[6] { "", "", "", "", "", "" };
+        static string[] label = new string[6] { "", "", "", "", "", "" };
 
         static void Main(string[] args)
         {
@@ -42,15 +43,15 @@ namespace Puzzle
             //startState.PuzzleState[7] = 8;
             //startState.PuzzleState[8] = 3;
 
-            startState.PuzzleState[0] = 0;   //**
-            startState.PuzzleState[1] = 6;
-            startState.PuzzleState[2] = 2;
-            startState.PuzzleState[3] = 1;
-            startState.PuzzleState[4] = 5;
-            startState.PuzzleState[5] = 7;
-            startState.PuzzleState[6] = 4;
-            startState.PuzzleState[7] = 8;
-            startState.PuzzleState[8] = 3;
+            //startState.PuzzleState[0] = 0;   //**
+            //startState.PuzzleState[1] = 6;
+            //startState.PuzzleState[2] = 2;
+            //startState.PuzzleState[3] = 1;
+            //startState.PuzzleState[4] = 5;
+            //startState.PuzzleState[5] = 7;
+            //startState.PuzzleState[6] = 4;
+            //startState.PuzzleState[7] = 8;
+            //startState.PuzzleState[8] = 3;
 
             //startState.PuzzleState[0] = 6;
             //startState.PuzzleState[1] = 0;
@@ -76,64 +77,57 @@ namespace Puzzle
                 endState.PuzzleState[i] = i + 1;
             endState.PuzzleState[8] = 0;
 
-            //startState.PuzzleState[0] = 4;
-            //startState.PuzzleState[1] = 0;
-            //startState.PuzzleState[2] = 2;
-            //startState.PuzzleState[3] = 1;
-            //startState.PuzzleState[4] = 3;
-            //startState.PuzzleState[5] = 5;
-            //startState.PuzzleState[6] = 6;
-            //startState.PuzzleState[7] = 7;
-            //startState.PuzzleState[8] = 8;
+            startState.PuzzleState[0] = 4;
+            startState.PuzzleState[1] = 0;
+            startState.PuzzleState[2] = 2;
+            startState.PuzzleState[3] = 1;
+            startState.PuzzleState[4] = 3;
+            startState.PuzzleState[5] = 5;
+            startState.PuzzleState[6] = 6;
+            startState.PuzzleState[7] = 7;
+            startState.PuzzleState[8] = 8;
 
-            //for (int i = 0; i < 9; i++)
-            //    endState.PuzzleState[i] = i;
+            for (int i = 0; i < 9; i++)
+                endState.PuzzleState[i] = i;
 
             Problem P = new Problem(startState, endState);
 
             //breadth-first search - szukanie wszerz
-            GenerateResult(P, new FringeFifo<Node>(), "fifo");
+            GenerateResult(P, new FringeFifo<Node>(), 0, "fifo");
 
             //depth-first search - szukanie w głąb 
-            //GenerateResult(P, new FringeLifo<Node>(), "lifo");
+            GenerateResult(P, new FringeLifo<Node>(), 1, "lifo");
 
             Func<Node, int> function1 = funcNumberOfElement;
             Func<Node, int> function2 = funcManhattanDistance;
 
-            //GenerateResult(P, new FringeWithPrio<Node, int>(function1), "prio1");
-            //GenerateResult(P, new FringeWithPrio<Node, int>(function2), "prio2");
+            GenerateResult(P, new FringeWithPrio<Node, int>(function1), 2, "list with prio + h1");
+            GenerateResult(P, new FringeWithPrio<Node, int>(function2), 3, "list with prio + h2");
 
+            GenerateResult(P, new Heap3<Node,int>(function1), 4, "heap + h1");            
+            GenerateResult(P, new Heap3<Node,int>(function2), 5, "heap + h2");
 
-            Heap3<Node, int> heap1 = new Heap3<Node, int>(function1);
-            GenerateResult(P, heap1, "num of element");
-            Heap3<Node, int> heap2 = new Heap3<Node, int>(function2);
-            GenerateResult(P, heap2, "Manhattan dist");
+            Console.Write(string.Format("{0,20}", ""));
+            Console.Write(string.Format("{0,20}", "Add counter"));
+            Console.Write(string.Format("{0,20}", "Execution time"));
+            Console.WriteLine(string.Format("{0,20}", "Way length"));
 
-
-            label.Insert(0, "");
-            foreach (string s in label)
+            for (int i = 0; i < 6; i++ )
             {
-                Console.Write(string.Format("{0,15}", s));
+                Console.Write(string.Format("{0,20}",label[i]));
+                Console.Write(string.Format("{0,20}", addCounter[i]));
+                Console.Write(string.Format("{0,20}", executionTime[i]));
+                Console.WriteLine(string.Format("{0,20}", wayLength[i]));
             }
+
             Console.WriteLine();
-
-            Console.Write(string.Format("{0,15}","Add counter:"));
-            foreach(string s in addCounter)
-            {
-                Console.Write(string.Format("{0,15}",s));
-            }
-            Console.WriteLine();
-
-            Console.Write(string.Format("{0,15}","Execution time:"));
-            foreach (string s in executionTime)
-            {
-                Console.Write(string.Format("{0,15}",s));
-            }
+            Console.WriteLine("\th1- number of elements");
+            Console.WriteLine("\th2- Manhattan distance");
 
             Console.ReadLine();
         }
 
-        private static void GenerateResult(IProblem P, IFringe<Node> F,string title)
+        private static void GenerateResult(IProblem P, IFringe<Node> F,int i,string title)
         {
             Fringe<Node> _f = new Fringe<Node>(F);
 
@@ -145,18 +139,19 @@ namespace Puzzle
             var result = treeSearchWithQueue.Search(P, _f).Reverse();
             watch.Stop();
 
+            int wayCounter = 0;
             foreach (var state in result)
             {
                 State _state = state as State;
                 Console.WriteLine(_state.ToString());
+                wayCounter++;
             }
 
-            //Console.WriteLine("Add function counter: {0}", _f.Counter);
-            addCounter.Add(_f.Counter.ToString());
-            //Console.WriteLine("Execution time: {0}ms", watch.ElapsedMilliseconds);
-            executionTime.Add(watch.ElapsedMilliseconds.ToString());
-            label.Add(title);
-            
+            label[i] = title;
+            addCounter[i] = _f.Counter.ToString();
+            executionTime[i]=watch.ElapsedMilliseconds.ToString();
+            wayLength[i] = wayCounter.ToString();
+
             Console.WriteLine("Done...");
         }
 

@@ -51,13 +51,23 @@ namespace Search
 
         private bool Visited(Node node, IState nextState)
         {
+            int depth = 0;
             while (node != null)
             {
                 if (node.State.IsEqual(nextState))
                     return true;
                 node = node.Parent;
+                depth++;
             }
-            return false;
+            if(depth<100)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            
 
         }
     }
