@@ -22,7 +22,12 @@ namespace Puzzle
 
             this.list[0] = this.list[this.list.Count - 1];
             this.list.RemoveAt(this.list.Count - 1);
-            this.ShiftDown(0);                         
+
+            if(this.list.Count>0)
+            {
+                this.ShiftDown(0); 
+            }
+                                    
 
             return element;
         }
@@ -31,12 +36,6 @@ namespace Puzzle
         {
             this.list.Add(element);
             this.ShiftUp(this.list.Count - 1);
-
-            //if(this.list.Count-1 != 0)
-            //{
-            //    this.ShiftUp(this.list.Count - 1);
-            //}
-            
         }
 
         public bool EmptyFringe()
@@ -57,18 +56,18 @@ namespace Puzzle
             do
             {
                 parent = child; 
-                try
-                {
+                //try
+                //{
                     if (2 * parent + 1 < list.Count && Key(list[2 * parent + 1]).CompareTo(Key(list[child])) > 0)
                         child = 2 * parent + 1;
-                    if (2 * parent < list.Count && Key(list[2 * parent + 2]).CompareTo(Key(list[child])) > 0)
+                    if (2 * parent + 2 < list.Count && Key(list[2 * parent + 2]).CompareTo(Key(list[child])) > 0)
                         child = 2 * parent + 2;
                     T tmp = list[parent];
                     list[parent] = list[child];
                     list[child] = tmp;
-                }
-                catch 
-                { }
+                //}
+                //catch 
+                //{ }
                 
             } while (parent != child);
         }
@@ -79,10 +78,8 @@ namespace Puzzle
             do
             {
                 if (child % 2 == 0)
-                    //parent = (child / 2) + 1;
                     parent = child / 2;
                 else
-                    //parent = child / 2;
                     parent = (child / 2) + 1;
                 if (Key(this.list[child]).CompareTo(Key(this.list[parent])) > 0)
                 {

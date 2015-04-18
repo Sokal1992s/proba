@@ -12,7 +12,7 @@ namespace Puzzle
         const int n = 3;
 
         public int[] PuzzleState;
-        public int priority = 0;
+
         public int N
         {
             get

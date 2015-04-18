@@ -9,16 +9,16 @@ namespace Puzzle
 {
     public class FringeLifo<T> : IFringe<T>
     {
-        List<T> list = new List<T>();
+        Stack<T> stack = new Stack<T>();
 
         public void Add(T node)
         {
-            list.Insert(0, node);
+            stack.Push(node);
         }
 
         public bool EmptyFringe()
         {
-            if (!list.Any())
+            if (!stack.Any())
             {
                 return true;
             }
@@ -30,12 +30,7 @@ namespace Puzzle
 
         public T UploadState()
         {
-            T node;
-
-            node = list.First();
-            list.RemoveAt(0);
-
-            return node;
+            return stack.Pop();
         }
     }
 }

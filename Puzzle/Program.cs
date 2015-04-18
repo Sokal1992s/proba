@@ -73,30 +73,41 @@ namespace Puzzle
             //startState.PuzzleState[8] = 8;
 
             for (int i = 0; i < 8; i++)
-                endState.PuzzleState[i] = i+1;
+                endState.PuzzleState[i] = i + 1;
             endState.PuzzleState[8] = 0;
 
-            //*) waga równa 1 dla każdej kombinacji
-            Func<Node, int> function0 = func0;
+            //startState.PuzzleState[0] = 4;
+            //startState.PuzzleState[1] = 0;
+            //startState.PuzzleState[2] = 2;
+            //startState.PuzzleState[3] = 1;
+            //startState.PuzzleState[4] = 3;
+            //startState.PuzzleState[5] = 5;
+            //startState.PuzzleState[6] = 6;
+            //startState.PuzzleState[7] = 7;
+            //startState.PuzzleState[8] = 8;
 
-            //1) waga = liczba kostek na swoim miejscu 
-            Func<Node, int> function1 = func1;
-
-            //2) waga = odległość Manhattan
-            Func<Node, int> function2 = func2;
+            //for (int i = 0; i < 9; i++)
+            //    endState.PuzzleState[i] = i;
 
             Problem P = new Problem(startState, endState);
-            FringeFifo<Node> fifo = new FringeFifo<Node>();
-            FringeLifo<Node> lifo = new FringeLifo<Node>();
 
-            GenerateResult(P, fifo, "fifo");
-            //GenerateResult(P, lifo);
+            //breadth-first search - szukanie wszerz
+            GenerateResult(P, new FringeFifo<Node>(), "fifo");
+
+            //depth-first search - szukanie w głąb 
+            //GenerateResult(P, new FringeLifo<Node>(), "lifo");
+
+            Func<Node, int> function1 = funcNumberOfElement;
+            Func<Node, int> function2 = funcManhattanDistance;
+
+            //GenerateResult(P, new FringeWithPrio<Node, int>(function1), "prio1");
+            //GenerateResult(P, new FringeWithPrio<Node, int>(function2), "prio2");
+
 
             Heap3<Node, int> heap1 = new Heap3<Node, int>(function1);
-            GenerateResult(P, heap1, "correct field");
-
+            GenerateResult(P, heap1, "num of element");
             Heap3<Node, int> heap2 = new Heap3<Node, int>(function2);
-            GenerateResult(P, heap2, "Manhattan");
+            GenerateResult(P, heap2, "Manhattan dist");
 
 
             label.Insert(0, "");
@@ -149,28 +160,32 @@ namespace Puzzle
             Console.WriteLine("Done...");
         }
 
-        private static int func2(Node n)
+        private static int funcManhattanDistance(Node n)
         {
-                var state = n.State as State;
-                //największa odległóść - 0-lewy, górny róg 
-                int weight = 2 * (state.N - 1);
-                //od największej odległości będziemy odejmować odległość 0 
-                //im więcej odejmiemy (tym zero dalej od końca) tym gorszy priorytet
-  
-                //xk, yk - położenie "0" w endState
-                int xk = endState.Find(0) / state.N;
-                int yk = endState.Find(0) % state.N;
+            var state = n.State as State;
+            int totalWeight = 0;
 
-                //xp, yp - położenie "0" w n.state
-                int xp = state.Find(0) / state.N;
-                int yp = state.Find(0) % state.N;
+            int maxDistance = 2 * (state.N - 1);
+
+            for (int i = 0; i < state.PuzzleState.Length; i++)
+            {
+                int weight = maxDistance;
+
+                int xp = i / state.N;
+                int yp = i % state.N;
+
+                int j = endState.Find(state.PuzzleState[i]);
+                int xk = j / state.N;
+                int yk = j % state.N;
 
                 weight -= Math.Abs(xp - xk) + Math.Abs(yp - yk);
+                totalWeight += weight;
+            }
 
-                return weight;
+            return totalWeight;
         }
 
-        private static int func1(Node n)
+        private static int funcNumberOfElement(Node n)
         {
             int weight=0;
 
@@ -182,11 +197,6 @@ namespace Puzzle
             }
 
             return weight;
-        }
-
-        private static int func0(Node n)
-        {
-            return 1;
         }
     }
 }
