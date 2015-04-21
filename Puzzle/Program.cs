@@ -20,62 +20,74 @@ namespace Puzzle
 
         static void Main(string[] args)
         {
-            //for (int i = 0; i < 9; i++)
-            //    startState.PuzzleState[i] = i;
-            //to sie liczy długo..
-            //startState.PuzzleState[0] = 4;
-            //startState.PuzzleState[1] = 1;
-            //startState.PuzzleState[2] = 0;
-            //startState.PuzzleState[3] = 7;
-            //startState.PuzzleState[4] = 6;
-            //startState.PuzzleState[5] = 5;
-            //startState.PuzzleState[6] = 2;
-            //startState.PuzzleState[7] = 3;
-            //startState.PuzzleState[8] = 8;
-
-            //startState.PuzzleState[0] = 1;
-            //startState.PuzzleState[1] = 6;
-            //startState.PuzzleState[2] = 2;
-            //startState.PuzzleState[3] = 5;
-            //startState.PuzzleState[4] = 7;
-            //startState.PuzzleState[5] = 0;
-            //startState.PuzzleState[6] = 4;
-            //startState.PuzzleState[7] = 8;
-            //startState.PuzzleState[8] = 3;
-
-            //startState.PuzzleState[0] = 0;   //**
-            //startState.PuzzleState[1] = 6;
-            //startState.PuzzleState[2] = 2;
-            //startState.PuzzleState[3] = 1;
-            //startState.PuzzleState[4] = 5;
-            //startState.PuzzleState[5] = 7;
-            //startState.PuzzleState[6] = 4;
-            //startState.PuzzleState[7] = 8;
-            //startState.PuzzleState[8] = 3;
-
-            //startState.PuzzleState[0] = 6;
-            //startState.PuzzleState[1] = 0;
-            //startState.PuzzleState[2] = 2;
-            //startState.PuzzleState[3] = 1;
-            //startState.PuzzleState[4] = 5;
-            //startState.PuzzleState[5] = 7;
-            //startState.PuzzleState[6] = 4;
-            //startState.PuzzleState[7] = 8;
-            //startState.PuzzleState[8] = 3;
-
-            //startState.PuzzleState[0] = 1;
-            //startState.PuzzleState[1] = 2;
-            //startState.PuzzleState[2] = 3;
-            //startState.PuzzleState[3] = 0;
-            //startState.PuzzleState[4] = 5;
-            //startState.PuzzleState[5] = 6;
-            //startState.PuzzleState[6] = 4;
-            //startState.PuzzleState[7] = 7;
-            //startState.PuzzleState[8] = 8;
-
             for (int i = 0; i < 8; i++)
                 endState.PuzzleState[i] = i + 1;
             endState.PuzzleState[8] = 0;
+
+            startState.PuzzleState[0] = 4;
+            startState.PuzzleState[1] = 1;
+            startState.PuzzleState[2] = 0;
+            startState.PuzzleState[3] = 7;
+            startState.PuzzleState[4] = 6;
+            startState.PuzzleState[5] = 5;
+            startState.PuzzleState[6] = 2;
+            startState.PuzzleState[7] = 3;
+            startState.PuzzleState[8] = 8;
+
+            Count("from: 410765238 to: 12345670");
+            ShowStatistics();
+
+            startState.PuzzleState[0] = 1;
+            startState.PuzzleState[1] = 6;
+            startState.PuzzleState[2] = 2;
+            startState.PuzzleState[3] = 5;
+            startState.PuzzleState[4] = 7;
+            startState.PuzzleState[5] = 0;
+            startState.PuzzleState[6] = 4;
+            startState.PuzzleState[7] = 8;
+            startState.PuzzleState[8] = 3;
+
+            Count("from: 162570483 to: 12345670");
+            ShowStatistics();
+
+            startState.PuzzleState[0] = 0; 
+            startState.PuzzleState[1] = 6;
+            startState.PuzzleState[2] = 2;
+            startState.PuzzleState[3] = 1;
+            startState.PuzzleState[4] = 5;
+            startState.PuzzleState[5] = 7;
+            startState.PuzzleState[6] = 4;
+            startState.PuzzleState[7] = 8;
+            startState.PuzzleState[8] = 3;
+
+            Count("from: 062157483 to: 12345670");
+            ShowStatistics();
+
+            startState.PuzzleState[0] = 6;
+            startState.PuzzleState[1] = 0;
+            startState.PuzzleState[2] = 2;
+            startState.PuzzleState[3] = 1;
+            startState.PuzzleState[4] = 5;
+            startState.PuzzleState[5] = 7;
+            startState.PuzzleState[6] = 4;
+            startState.PuzzleState[7] = 8;
+            startState.PuzzleState[8] = 3;
+
+            Count("from: 602157483 to: 12345670");
+            ShowStatistics();
+
+            startState.PuzzleState[0] = 1;
+            startState.PuzzleState[1] = 2;
+            startState.PuzzleState[2] = 3;
+            startState.PuzzleState[3] = 0;
+            startState.PuzzleState[4] = 5;
+            startState.PuzzleState[5] = 6;
+            startState.PuzzleState[6] = 4;
+            startState.PuzzleState[7] = 7;
+            startState.PuzzleState[8] = 8;
+
+            Count("from: 123056478 to: 12345670");
+            ShowStatistics();
 
             startState.PuzzleState[0] = 4;
             startState.PuzzleState[1] = 0;
@@ -89,6 +101,16 @@ namespace Puzzle
 
             for (int i = 0; i < 9; i++)
                 endState.PuzzleState[i] = i;
+
+            Count("from: 402135678 to: 01234567");
+            ShowStatistics();
+
+            Console.ReadLine();
+        }
+
+        private static void Count(string text)
+        {
+            Console.WriteLine("Wait... {0}",text);
 
             Problem P = new Problem(startState, endState);
 
@@ -104,17 +126,23 @@ namespace Puzzle
             GenerateResult(P, new FringeWithPrio<Node, int>(function1), 2, "list with prio + h1");
             GenerateResult(P, new FringeWithPrio<Node, int>(function2), 3, "list with prio + h2");
 
-            GenerateResult(P, new Heap3<Node,int>(function1), 4, "heap + h1");            
-            GenerateResult(P, new Heap3<Node,int>(function2), 5, "heap + h2");
+            GenerateResult(P, new Heap3<Node, int>(function1), 4, "heap + h1");
+            GenerateResult(P, new Heap3<Node, int>(function2), 5, "heap + h2");
 
+            Console.WriteLine("Done...");
+        }
+
+
+        private static void ShowStatistics()
+        {
             Console.Write(string.Format("{0,20}", ""));
             Console.Write(string.Format("{0,20}", "Add counter"));
             Console.Write(string.Format("{0,20}", "Execution time"));
             Console.WriteLine(string.Format("{0,20}", "Way length"));
 
-            for (int i = 0; i < 6; i++ )
+            for (int i = 0; i < 6; i++)
             {
-                Console.Write(string.Format("{0,20}",label[i]));
+                Console.Write(string.Format("{0,20}", label[i]));
                 Console.Write(string.Format("{0,20}", addCounter[i]));
                 Console.Write(string.Format("{0,20}", executionTime[i]));
                 Console.WriteLine(string.Format("{0,20}", wayLength[i]));
@@ -123,8 +151,7 @@ namespace Puzzle
             Console.WriteLine();
             Console.WriteLine("\th1- number of elements");
             Console.WriteLine("\th2- Manhattan distance");
-
-            Console.ReadLine();
+            Console.WriteLine();
         }
 
         private static void GenerateResult(IProblem P, IFringe<Node> F,int i,string title)
@@ -133,8 +160,6 @@ namespace Puzzle
 
             TreeSearchWithQueue treeSearchWithQueue = new TreeSearchWithQueue();
 
-            Console.WriteLine("Wait...");
-
             var watch = Stopwatch.StartNew();
             var result = treeSearchWithQueue.Search(P, _f).Reverse();
             watch.Stop();
@@ -142,8 +167,8 @@ namespace Puzzle
             int wayCounter = 0;
             foreach (var state in result)
             {
-                State _state = state as State;
-                Console.WriteLine(_state.ToString());
+                //State _state = state as State;
+                //Console.WriteLine(_state.ToString());
                 wayCounter++;
             }
 
@@ -152,7 +177,6 @@ namespace Puzzle
             executionTime[i]=watch.ElapsedMilliseconds.ToString();
             wayLength[i] = wayCounter.ToString();
 
-            Console.WriteLine("Done...");
         }
 
         private static int funcManhattanDistance(Node n)
