@@ -41,6 +41,7 @@ namespace Puzzle
         public T UploadState()
         {
             return fringe.UploadState();
-        }
+  //dodaje komentarz
+         }
     }
 }
